@@ -4,7 +4,8 @@
   "description": "cubemap and equilateral panoramic viewer",
   "main": "index.js",
   "dependencies": {
-    "@egjs/view360": "^3.3.2"
+    "@egjs/view360": "^3.3.2",
+    "express": "^4.17.1"
   },
   "devDependencies": {},
   "scripts": {

@@ -2,9 +2,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//naver.github.io/egjs-view360/release/latest/dist/PanoViewer/view360.panoviewer.pkgd.min.js"></script>
+    <script src="https://naver.github.io/egjs-view360/common/js/GyroTouchOptions.js"></script>
+    <script src="https://naver.github.io/egjs-view360/common/js/screenfull.min.js"></script>
+    <script src="https://naver.github.io/egjs-view360/common/js/PieView.js"></script>
+    <script src="https://naver.github.io/egjs-view360/common/js/PanoControls.js"></script>
+    <script type="module" src="index.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #myPanoViewer {
+        position: relative; /* Must be relative or absolute.*/
+        width: 1024px !important;
+        height: 512px !important;
+        margin: auto;
+        }
+
+        canvas {
+            width:100% !important;
+            height:100% !important;
+            margin:none !important;
+        }
+    </style>
 </head>
 <body>
-    <div id="myPanoViewer"></div>
+    <h2><span><input id="the-file-input" type="file" accept="image/*"></span></h2>
+    <div style="max-width:none !important; max-height:none !important;" id="myPanoViewer">
+    </div>
 </body>
 </html>
