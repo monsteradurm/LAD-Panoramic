@@ -30,50 +30,117 @@
             color: gray !important;
             opacity: 1;
         }
+
+        .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+            color: #eee;
+            background-color: transparent !important;
+            border: none !important;
+        }
+
+        .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+            border: none !important;
+        }
+        .nav-tabs .nav-link {
+            border: none !important;
+        }
+
+        a {
+            color: #aaa;
+        }
+
+        a:hover {
+            color: white;
+            text-decoration: none;
+        }
+        .nav-tabs {
+            border-bottom: none !important;
+        }
+
+        h4 {
+            color:#343a40;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top:0px; padding-left: 30px;">
-        <div class="navbar-brand" href="#">LAD-Panoramic</div>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            
-          </div>
+        <div class="navbar-brand">LAD-Panoramic</div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="view-tab" data-toggle="tab" href="#view" role="tab" aria-controls="view" aria-selected="true">View</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="convert-tab" data-toggle="tab" href="#convert" role="tab" aria-controls="convert" aria-selected="false">Convert</a>
+              </li>
+        </ul>
         </div>
       </nav>
-    <div class="container" style="padding-top:20px">
-        <div class="input-group" style="margin:auto">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-              <label class="custom-file-label" id="inputFileLabel04" for="inputGroupFile04">Choose file</label>
-            </div>
-          </div>
-        <div id="viewer"></div>
-    </div>
 
+      <div class="tab-content" style="margin-top:40px">
+        
+        <div class="tab-pane active" id="view" role="tabpanel" aria-labelledby="view-tab">
+            <div class="container">
+                <div id="viewer"></div>
+                
+                <div class="input-group" style="margin:auto">
+                    <div class="custom-file" style="margin-top:40px">
+                    <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                    <label class="custom-file-label" id="inputFileLabel04" for="inputGroupFile04">Choose file</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="convert" role="tabpanel" aria-labelledby="convert-tab">
+                <div class="container">
+                <h4>Cubemap to Equirectangular</h4> 
+                <h6>Use the<a href="http://360toolkit.co" target="_blank" style="color:blue;margin-left:5px">360Toolkit</a> (Opens in a new tab)</h6>
+
+                <h4 style="margin-top:40px">Equirectangular to Cubemap</h4>
+                </div>
+                <iframe src="https://matheowis.github.io/HDRI-to-CubeMap/" style="width: 100vw !important;
+                height: 800px !important;
+                outline: none;
+                zoom: 1.2;
+                margin-left: -120px;
+                border: none;">
+                </iframe>
+                
+        </div>
+
+      </div>
 
 <script>
   var viewer = new PhotoSphereViewer.Viewer({
     container: document.querySelector('#viewer'),
     panorama: 'images/default.jpg'
   });
+ 
   var fileLabel = document.getElementById('inputFileLabel04')
   var fileInput = document.getElementById("inputGroupFile04");
-    fileInput.addEventListener("change", function (e) {
-
-    // generate a new FileReader object
+  fileInput.addEventListener("change", function (e) {
     var reader = new FileReader();
-
-    // inject an image with the src url
     reader.onload = function (event) {
         the_url = event.target.result;
         fileLabel.innerHTML = fileInput.files.item(0).name;
         viewer.setPanorama(the_url);
     }
-
-    // when the file is read it triggers the onload event above.
     reader.readAsDataURL(this.files[0]);
-});
+  });
+
+  var fileConvertInput = document.getElementById("inputFileConvert");
+  fileConvertInput.addEventListener("change", function (e) {
+    var reader = new FileReader();
+    reader.onload = function (event) {
+        the_url = event.target.result;
+        init(URL);
+        animate();
+    }
+    reader.readAsDataURL(this.files[0]);
+  });
 </script>
 </body>
 </html>

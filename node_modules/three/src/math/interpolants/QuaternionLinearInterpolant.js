@@ -3,6 +3,8 @@ import { Quaternion } from '../Quaternion.js';
 
 /**
  * Spherical linear unit quaternion interpolant.
+ *
+ * @author tschw
  */
 
 function QuaternionLinearInterpolant( parameterPositions, sampleValues, sampleSize, resultBuffer ) {
@@ -17,15 +19,15 @@ QuaternionLinearInterpolant.prototype = Object.assign( Object.create( Interpolan
 
 	interpolate_: function ( i1, t0, t, t1 ) {
 
-		const result = this.resultBuffer,
+		var result = this.resultBuffer,
 			values = this.sampleValues,
 			stride = this.valueSize,
 
+			offset = i1 * stride,
+
 			alpha = ( t - t0 ) / ( t1 - t0 );
 
-		let offset = i1 * stride;
-
-		for ( let end = offset + stride; offset !== end; offset += 4 ) {
+		for ( var end = offset + stride; offset !== end; offset += 4 ) {
 
 			Quaternion.slerpFlat( result, 0, values, offset - stride, values, offset, alpha );
 

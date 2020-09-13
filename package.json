@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@egjs/view360": "^3.3.2",
+    "bundle-js": "^1.0.3",
     "express": "^4.17.1",
     "photo-sphere-viewer": "^4.0.7"
   },

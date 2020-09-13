@@ -1,18 +1,22 @@
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 function WebGLExtensions( gl ) {
 
-	const extensions = {};
+	var extensions = {};
 
 	return {
 
-		has: function ( name ) {
+		get: function ( name ) {
 
 			if ( extensions[ name ] !== undefined ) {
 
-				return extensions[ name ] !== null;
+				return extensions[ name ];
 
 			}
 
-			let extension;
+			var extension;
 
 			switch ( name ) {
 
@@ -37,21 +41,15 @@ function WebGLExtensions( gl ) {
 
 			}
 
-			extensions[ name ] = extension;
-
-			return extension !== null;
-
-		},
-
-		get: function ( name ) {
-
-			if ( ! this.has( name ) ) {
+			if ( extension === null ) {
 
 				console.warn( 'THREE.WebGLRenderer: ' + name + ' extension not supported.' );
 
 			}
 
-			return extensions[ name ];
+			extensions[ name ] = extension;
+
+			return extension;
 
 		}
 

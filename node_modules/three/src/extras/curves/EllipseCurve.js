@@ -1,6 +1,7 @@
 import { Curve } from '../core/Curve.js';
 import { Vector2 } from '../../math/Vector2.js';
 
+
 function EllipseCurve( aX, aY, xRadius, yRadius, aStartAngle, aEndAngle, aClockwise, aRotation ) {
 
 	Curve.call( this );
@@ -29,11 +30,11 @@ EllipseCurve.prototype.isEllipseCurve = true;
 
 EllipseCurve.prototype.getPoint = function ( t, optionalTarget ) {
 
-	const point = optionalTarget || new Vector2();
+	var point = optionalTarget || new Vector2();
 
-	const twoPi = Math.PI * 2;
-	let deltaAngle = this.aEndAngle - this.aStartAngle;
-	const samePoints = Math.abs( deltaAngle ) < Number.EPSILON;
+	var twoPi = Math.PI * 2;
+	var deltaAngle = this.aEndAngle - this.aStartAngle;
+	var samePoints = Math.abs( deltaAngle ) < Number.EPSILON;
 
 	// ensures that deltaAngle is 0 .. 2 PI
 	while ( deltaAngle < 0 ) deltaAngle += twoPi;
@@ -67,17 +68,17 @@ EllipseCurve.prototype.getPoint = function ( t, optionalTarget ) {
 
 	}
 
-	const angle = this.aStartAngle + t * deltaAngle;
-	let x = this.aX + this.xRadius * Math.cos( angle );
-	let y = this.aY + this.yRadius * Math.sin( angle );
+	var angle = this.aStartAngle + t * deltaAngle;
+	var x = this.aX + this.xRadius * Math.cos( angle );
+	var y = this.aY + this.yRadius * Math.sin( angle );
 
 	if ( this.aRotation !== 0 ) {
 
-		const cos = Math.cos( this.aRotation );
-		const sin = Math.sin( this.aRotation );
+		var cos = Math.cos( this.aRotation );
+		var sin = Math.sin( this.aRotation );
 
-		const tx = x - this.aX;
-		const ty = y - this.aY;
+		var tx = x - this.aX;
+		var ty = y - this.aY;
 
 		// Rotate the point about the center of the ellipse.
 		x = tx * cos - ty * sin + this.aX;
@@ -113,7 +114,7 @@ EllipseCurve.prototype.copy = function ( source ) {
 
 EllipseCurve.prototype.toJSON = function () {
 
-	const data = Curve.prototype.toJSON.call( this );
+	var data = Curve.prototype.toJSON.call( this );
 
 	data.aX = this.aX;
 	data.aY = this.aY;
