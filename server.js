@@ -12,5 +12,13 @@ app.set('view engine', 'ejs');
 app.get('/',function(req,res) {
     res.sendFile(path.join(__dirname, '/index.html'));
   });
+
+app.get('/TNBC',function(req,res) {
+    res.sendFile(path.join(__dirname, '/nmbc.html'));
+  });
+
+app.get('/TNBC-SNOW',function(req,res) {
+  res.sendFile(path.join(__dirname, '/nmbc-snow.html'));
+});
   
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
