@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
@@ -17,17 +18,30 @@
     <style>
         /* the viewer container must have a defined size */
         #viewer {
-          height: 512px;
-          width: 1024px;
+          height: auto;
+          width: calc(100vw - 500px);
           margin:auto;
-          margin-top:20px;
           border: solid black 2px;
+        }
+
+        .navbar-brand {
+            font-size:30px;
+            font-weight:bold;
+            font-family: Delius;
+        }
+        .la-logo {
+            width:250px;
+            height: auto;
+            position:absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index:1000;
         }
 
         #the-file-input {
             font-style: italic;
             font-weight: normal;
-            color: gray !important;
+            //color: gray !important;
             opacity: 1;
         }
 
@@ -59,88 +73,138 @@
         h4 {
             color:#343a40;
         }
+
+        .form-control:focus {
+            border: solid gray 1px !important;
+            outline: none !important;
+            box-shadow:none !important;
+        }
+
+        .flex-grow {
+            flex: 1 0 auto;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top:0px; padding-left: 30px;">
-        <div class="navbar-brand">LAD-Panoramic</div>
+<img class="la-logo" src="images/logo.png" />
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top:0px; padding-left: 30px; height:10px; background:transparent;">
+ 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="view-tab" data-toggle="tab" href="#view" role="tab" aria-controls="view" aria-selected="true">View</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="convert-tab" data-toggle="tab" href="#convert" role="tab" aria-controls="convert" aria-selected="false">Convert</a>
-              </li>
-        </ul>
         </div>
+
       </nav>
 
       <div class="tab-content" style="margin-top:40px">
         
         <div class="tab-pane active" id="view" role="tabpanel" aria-labelledby="view-tab">
             <div class="container">
-                <div id="viewer"></div>
-                
-                <div class="input-group" style="margin:auto">
-                    <div class="custom-file" style="margin-top:40px">
-                    <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-                    <label class="custom-file-label" id="inputFileLabel04" for="inputGroupFile04">Choose file</label>
+                <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="min-width:300px !important">
+                            Iphone 12 Pro Max (landscape)
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="resDropdown">
+                            <a class="dropdown-item">Iphone 12 Pro Max (landscape)</a>
+                            <a class="dropdown-item">Iphone 12 Pro Max (portrait)</a>
+                            <a class="dropdown-item">Ipad Air (landscape)</a>
+                            <a class="dropdown-item">Ipad Air (portrait)</a>
+                        </div>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="input-group" style="width:100%;margin-left:auto">
+                            <input type="text" class="form-control"  id="file-text"     
+                                placeholder="Choose an equirectangular image." style="outline:none !important">
+
+                            <button class="btn btn-secondary" type="button" id="browse-button">Browse</button>
+                        </div>
                     </div>
                 </div>
+
+                <input type="file" id="file-input" style="visibility:hidden !important">
             </div>
         </div>
-
-        <div class="tab-pane" id="convert" role="tabpanel" aria-labelledby="convert-tab">
-                <div class="container">
-                <h4>Cubemap to Equirectangular</h4> 
-                <h6>Use the<a href="http://360toolkit.co" target="_blank" style="color:blue;margin-left:5px">360Toolkit</a> (Opens in a new tab)</h6>
-
-                <h4 style="margin-top:40px">Equirectangular to Cubemap</h4>
-                </div>
-                <iframe src="https://matheowis.github.io/HDRI-to-CubeMap/" style="width: 100vw !important;
-                height: 800px !important;
-                outline: none;
-                zoom: 1.2;
-                margin-left: -120px;
-                border: none;">
-                </iframe>
-                
-        </div>
-
       </div>
 
+<div id="viewer"></div>
+<div style="height:10px; bottom:0px; width:100vw; position:absolute;background:#343a40"></div>
 <script>
+  var resolutions = {
+      "Iphone 12 Pro Max (portrait)": { width: 576, height: 1024 },
+      "Iphone 12 Pro Max (landscape)": { width: 1024, height: 576 },
+      "Ipad Air (landscape)": { width: 1024, height: 576 },
+      "Ipad Air (portrait)": { width: 576, height: 1024 },
+  }
+
+  $('#browse-button').click(function(){
+    $('#file-input').click();
+  });
+
   var viewer = new PhotoSphereViewer.Viewer({
     container: document.querySelector('#viewer'),
     panorama: 'images/default.jpg'
   });
  
-  var fileLabel = document.getElementById('inputFileLabel04')
-  var fileInput = document.getElementById("inputGroupFile04");
-  fileInput.addEventListener("change", function (e) {
-    var reader = new FileReader();
-    reader.onload = function (event) {
-        the_url = event.target.result;
-        fileLabel.innerHTML = fileInput.files.item(0).name;
-        viewer.setPanorama(the_url);
-    }
-    reader.readAsDataURL(this.files[0]);
+  var fileInput = document.getElementById("file-input");
+
+  $('.dropdown-menu a').click(function () {  
+    var selection = $(this).text();
+
+    $('#dropdownMenuButton').text(selection);
+    resizeViewer(resolutions[selection]);
+    
   });
 
-  var fileConvertInput = document.getElementById("inputFileConvert");
-  fileConvertInput.addEventListener("change", function (e) {
+  $(window).resize(function () {
+      var selection = $('#dropdownMenuButton').text().trim();
+      var res = resolutions[selection];
+      if (res)
+        resizeViewer(resolutions[$('#dropdownMenuButton').text().trim()])
+  })
+
+  $(document).ready(function () {
+      var selection = $('#dropdownMenuButton').text().trim();
+      var res = resolutions[selection];
+      if (res)
+        resizeViewer(resolutions[$('#dropdownMenuButton').text().trim()])
+  });
+
+  function resizeViewer(res) {
+    if (!res) return;
+
+    var selection = $(this).text();
+    var winx =  $(window).width();
+    var winy = $(window).height();
+
+    var aspect = res.width / res.height;
+
+    var height = winy - 170;
+    var width = height * aspect;
+
+    $('#viewer').css("width", width);
+    $('#viewer').css("height", height);
+    viewer.resize({height, width});
+  }
+
+  $('#file-input').on('change', function () {
+
+    var file = fileInput.files.item(0);
+    var fn = file.name;
+    
     var reader = new FileReader();
     reader.onload = function (event) {
         the_url = event.target.result;
-        init(URL);
-        animate();
+        viewer.setPanorama(the_url);
     }
-    reader.readAsDataURL(this.files[0]);
+    reader.readAsDataURL(file);
+    $('#file-text').val(fn)
   });
+
+resizeViewer(resolutions[$('#dropdownMenuButton').text()])
 </script>
 </body>
 </html>

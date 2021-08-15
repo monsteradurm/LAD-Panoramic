@@ -6,11 +6,14 @@
   "dependencies": {
     "@egjs/view360": "^3.3.2",
     "bundle-js": "^1.0.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "http-proxy": "^1.18.1",
     "photo-sphere-viewer": "^4.0.7"
   },
   "devDependencies": {},
   "scripts": {
+    "start": "pm2 start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
