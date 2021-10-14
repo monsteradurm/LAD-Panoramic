@@ -1,12 +1,11 @@
 const express = require("express")
 const app = express()
-const port = 3000
 const path = require('path');
 const httpProxy = require('http-proxy');
 
 var proxy = httpProxy.createProxyServer({});
 
-const cors = require('cors');
+const cors = require('cors'); 
 
 proxy.on('error', function(e) {
     console.log(e);
@@ -38,6 +37,6 @@ app.get('/TNBC-SNOW',function(req,res) {
   res.sendFile(path.join(__dirname, '/nmbc-snow.html'));
 });
   
-app.listen(port, () => {
-        console.log("LAD-Panoramic --> listening at: " + port)
+app.listen(process.env.PORT, () => {
+  console.log('LAD-Panoramic --> listening at:', process.env.PORT);
 });
