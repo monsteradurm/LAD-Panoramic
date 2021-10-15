@@ -37,6 +37,6 @@ app.get('/TNBC-SNOW',function(req,res) {
   res.sendFile(path.join(__dirname, '/nmbc-snow.html'));
 });
   
-app.listen(process.env.PORT, () => {
-  console.log('LAD-Panoramic --> listening at:', process.env.PORT);
+server = app.listen(0, () => {
+  console.log("LAD-Panoramic --> listening ", server.address().port)
 });
